@@ -3,17 +3,27 @@
 # Бот должен, как минимум, отвечать на фразы «привет», «как тебя зовут». 
 # Если фраза ему неизвестна, он выводит соответствующую фразу.
 
+import os
 
-dict_bot = {
-    "привет": "Привет!",
-    "как тебя зовут": "Меня зовут Бот.",
-    "как дела": "Терпимо."
-}
+print('Бот запущен. Для прекращения общения с ботом введите ":q" и подтвердите ввод <Enter>!')
 
-while True:
-    phrase = input("Ваш вопрос: ").lower()
-    if phrase in dict_bot:
-        print(dict_bot.get(phrase))
+with open('E:\GB\Python\hwpy_1_3\dict_bot.txt', 'r', encoding='utf-8') as file_dict:
+    dictionary = eval(file_dict.read())    
+
+flag = True
+
+while flag:
+    phrase = input('Введите вопрос: ')
+    
+    if phrase == ":q":
+        file_dict.close()
+        flag = False
     else:
-        print("Я не знаю, что на это ответить. Перефразируйте, пожалуйста.")
-        
+        answer_bot = dictionary.get(phrase)
+    if answer_bot:
+        print(answer_bot)
+    else:
+        new_answer = input('Я не знаю ответа. Как мне ответить на этот вопрос? ')
+        dictionary[phrase] = new_answer
+        with open('E:\GB\Python\hwpy_1_3\dict_bot.txt', 'w', encoding='utf-8') as file_dict:
+            file_dict.write(str(dictionary))
